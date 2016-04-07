@@ -75,6 +75,13 @@ class Group
     private $requestManagerGroups;
 
     /**
+     * @var ArrayCollection|RatingGroup[] $ratingGroups Rating Group
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\RatingGroup", mappedBy="group", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $ratingGroups;
+
+    /**
      * @var string $name Name
      *
      * @ORM\Column(type="string", length=100, nullable=false)
@@ -539,6 +546,57 @@ class Group
     public function getRequestManagerGroups()
     {
         return $this->requestManagerGroups;
+    }
+
+    /**
+     * Add ratingGroup
+     *
+     * @param RatingGroup $ratingGroup Rating Group
+     *
+     * @return $this
+     */
+    public function addRatingGroup(RatingGroup $ratingGroup)
+    {
+        $this->ratingGroups[] = $ratingGroup;
+
+        return $this;
+    }
+
+    /**
+     * Remove ratingGroup
+     *
+     * @param RatingGroup $ratingGroup Rating Group
+     */
+    public function removeRatingGroup(RatingGroup $ratingGroup)
+    {
+        $this->ratingGroups->removeElement($ratingGroup);
+    }
+
+    /**
+     * Set rating group
+     *
+     * @param ArrayCollection|RatingGroup[] $ratingGroups Rating Group
+     *
+     * @return $this
+     */
+    public function setRatingGroups(ArrayCollection $ratingGroups)
+    {
+        foreach ($ratingGroups as $ratingGroup) {
+            $ratingGroup->setGroup($this);
+        }
+        $this->ratingGroups = $ratingGroups;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingGroups
+     *
+     * @return ArrayCollection|RatingGroup[] Rating Group
+     */
+    public function getRatingGroups()
+    {
+        return $this->ratingGroups;
     }
 
     /*

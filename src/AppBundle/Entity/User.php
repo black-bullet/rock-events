@@ -62,6 +62,13 @@ class User extends BaseUser
     private $requestManagers;
 
     /**
+     * @var ArrayCollection|RatingGroup[] $ratingGroups Rating Groups
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\RatingGroup", mappedBy="user")
+     */
+    private $ratingGroups;
+
+    /**
      * @var string $fullName Full name
      *
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -333,6 +340,57 @@ class User extends BaseUser
     public function getRequestManager()
     {
         return $this->requestManagers;
+    }
+
+    /**
+     * Add ratingGroup
+     *
+     * @param RatingGroup $ratingGroup Rating Group
+     *
+     * @return $this
+     */
+    public function addRatingGroup(RatingGroup $ratingGroup)
+    {
+        $this->ratingGroups[] = $ratingGroup;
+
+        return $this;
+    }
+
+    /**
+     * Remove ratingGroup
+     *
+     * @param RatingGroup $ratingGroup Rating Group
+     */
+    public function removeRatingGroup(RatingGroup $ratingGroup)
+    {
+        $this->ratingGroups->removeElement($ratingGroup);
+    }
+
+    /**
+     * Get ratingGroups
+     *
+     * @return ArrayCollection|RatingGroup[] Rating Group
+     */
+    public function getRatingGroups()
+    {
+        return $this->ratingGroups;
+    }
+
+    /**
+     * Set manager groups
+     *
+     * @param ArrayCollection|RatingGroup[] $ratingGroups Rating Group
+     *
+     * @return $this
+     */
+    public function setRatingGroups(ArrayCollection $ratingGroups)
+    {
+        foreach ($ratingGroups as $ratingGroup) {
+            $ratingGroup->setUser($this);
+        }
+        $this->ratingGroups = $ratingGroups;
+
+        return $this;
     }
 
     /**
