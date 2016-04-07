@@ -39,6 +39,16 @@ class RatingCategory
     private $ratingGroups;
 
     /**
+     * @var Genre $subCategoryGenre Sub category genre
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Genre", inversedBy="ratingCategories")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     *
+     * @Gedmo\Versioned
+     */
+    private $subCategoryGenre;
+
+    /**
      * @var string $name Name
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -50,6 +60,25 @@ class RatingCategory
      * @Gedmo\Versioned
      */
     private $name;
+
+    /**
+     * @var string $subCategoryCountry Sub category country
+     *
+     * @ORM\Column(type="string", length=100, nullable=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min="2", max="100")
+     * @Assert\Type(type="string")
+     */
+    private $subCategoryCountry;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ratingGroups = new ArrayCollection();
+    }
 
     /**
      * Get ID
@@ -134,5 +163,53 @@ class RatingCategory
     public function getRatingGroups()
     {
         return $this->ratingGroups;
+    }
+
+    /**
+     * Set subCategoryCountry
+     *
+     * @param string $subCategoryCountry Sub category country
+     *
+     * @return $this
+     */
+    public function setSubCategoryCountry($subCategoryCountry)
+    {
+        $this->subCategoryCountry = $subCategoryCountry;
+
+        return $this;
+    }
+
+    /**
+     * Get subCategoryCountry
+     *
+     * @return string
+     */
+    public function getSubCategoryCountry()
+    {
+        return $this->subCategoryCountry;
+    }
+
+    /**
+     * Set subCategoryGenre
+     *
+     * @param Genre $subCategoryGenre Sub Category Genre
+     *
+     * @return $this
+     */
+    public function setSubCategoryGenre(Genre $subCategoryGenre = null)
+    {
+        $this->subCategoryGenre = $subCategoryGenre;
+
+        return $this;
+    }
+
+    /**
+     * Get subCategoryGenre
+     *
+     * @return Genre Genre
+     */
+    public function getSubCategoryGenre()
+    {
+        return $this->subCategoryGenre;
     }
 }

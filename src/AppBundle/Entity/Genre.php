@@ -46,6 +46,14 @@ class Genre
 
     /**
      *
+     * @var ArrayCollection|RatingCategory[] $ratingCategories Rating Category
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\RatingCategory", mappedBy="subCategoryGenre")
+     */
+    private $ratingCategories;
+
+    /**
+     *
      * @var ArrayCollection|GroupGenre[] $groupGenres Group Genres
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\GroupGenre", mappedBy="genre")
@@ -94,6 +102,16 @@ class Genre
      * @var string $imageName Image name
      */
     private $imageName;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->userGenres       = new ArrayCollection();
+        $this->ratingCategories = new ArrayCollection();
+        $this->groupGenres      = new ArrayCollection();
+    }
 
     /**
      * To string
@@ -221,6 +239,57 @@ class Genre
     public function getUserGenres()
     {
         return $this->userGenres;
+    }
+
+    /**
+     * Add ratingCategory
+     *
+     * @param RatingCategory $ratingCategory Rating Category
+     *
+     * @return $this
+     */
+    public function addRatingCategory(RatingCategory $ratingCategory)
+    {
+        $this->ratingCategories[] = $ratingCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove ratingCategory
+     *
+     * @param RatingCategory $ratingCategory Rating Category
+     */
+    public function removeRatingCategory(RatingCategory $ratingCategory)
+    {
+        $this->ratingCategories->removeElement($ratingCategory);
+    }
+
+    /**
+     * Set rating categories
+     *
+     * @param ArrayCollection|RatingCategory[] $ratingCategories User Genres
+     *
+     * @return $this
+     */
+    public function setRatingCategories(ArrayCollection $ratingCategories)
+    {
+        foreach ($ratingCategories as $ratingCategory) {
+            $ratingCategory->setGenre($this);
+        }
+        $this->ratingCategories = $ratingCategories;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingCategories
+     *
+     * @return ArrayCollection|RatingCategory[] Rating Category
+     */
+    public function getRatingCategories()
+    {
+        return $this->ratingCategories;
     }
 
     /**
