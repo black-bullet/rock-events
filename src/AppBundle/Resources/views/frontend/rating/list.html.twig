@@ -1,0 +1,85 @@
+{% extends 'group.html.twig' %}
+
+{% block body %}
+    <div class="l-filters">
+        <div class="content lp">
+            <div id="everything" class="l-sort__items_big l-sort__items items__category">
+                <ul class="l-sort__list ">
+                    <li class="l-sort__item">
+                        <input type="radio" name="music-category" class="l-sort__but" value="all" id="categoryAll" checked>
+                        <label for="categoryAll" class="l-sort__label category__label">Всі категорії</label>
+                    </li>
+                    <li class="l-sort__item">
+                        <input type="radio" name="music-category" class="l-sort__but" value="country" id="categoryCountry">
+                        <label for="categoryCountry" class="l-sort__label category__label">Країни</label>
+                    </li>
+                    <li class="l-sort__item">
+                        <input type="radio" name="music-category" class="l-sort__but" value="genre" id="categoryGenre">
+                        <label for="categoryGenre" class="l-sort__label category__label">Жанри</label>
+                    </li>
+                </ul>
+            </div>
+            <div id="everywhere" class="l-sort__items_small l-sort__items country f-r" style="display: none">
+                <div class="l-sort__header l-sort__header_spec items_country">Всі країни</div>
+                <ul class="l-sort__list l-sort__list_spec setScroll">
+                    <li class="l-sort__item">
+                        <input type="radio" name="country" class="l-sort__but" value="" id="countryAll" checked>
+                        <label for="countryAll" class="l-sort__label">Всі країни</label>
+                    </li>
+                    {% for country in groupCountries %}
+                        <li class="l-sort__item">
+                            <input type="radio" name="country" class="l-sort__but" value="{{ country.name }}" id="country{{ country.id }}">
+                            <label for="country{{ country.id }}" class="l-sort__label">{{ country.name }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="everything" class="l-sort__items_big l-sort__items genre" style="display: none">
+                <div class="l-sort__header"></div>
+                <ul class="l-sort__list ">
+                    <li class="l-sort__item">
+                        <input type="radio" name="music-style" class="l-sort__but" value="" id="styleAll" checked>
+                        <label for="styleAll" class="l-sort__label">Всі категорії</label>
+                    </li>
+                    {% for genre in groupGenres %}
+                        <li class="l-sort__item">
+                            <input type="radio" name="music-style" class="l-sort__but" value="{{ genre.id }}" id="style{{ genre.id }}">
+                            <label for="style{{ genre.id }}" class="l-sort__label">{{ genre.name }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div id="group-div" class="l-filter-elements">
+        {% for group in groups %}
+            <div class="filtered-element">
+                <div class="about-header about-header_prev content cf">
+                    <img src="{{ vich_uploader_asset(group[0], 'imageFile') }}" alt="{{ group[0].name }}" class="about-header__img" width="272px" height="136px">
+                    <div class="style-list-wrapper">
+                        <h2 class="about-header__header">
+                            <a href="{{ path('group_show', { 'slug': group[0].slug }) }}" class="about-header__group">{{ group[0].name }}</a>
+                        </h2>
+                        {{ render(controller('AppBundle:Frontend/Group:genres', { 'group' : group[0] } )) }}
+                    </div>
+                    <ul class="group-statistic cf">
+                        <li class="group-statistic__item">
+                            <p id="fans" class="group-statistic__link">
+                                <span>{{ group['stars']==null ? 0 : group['stars'] }}</span> stars
+                            </p>
+                        </li>
+                        <li class="group-statistic__item f-r">
+                            <a href="{{ path('group_show', { 'slug': group[0].slug }) }}" class="group-statistic__link group-statistic__but">Детальніше</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/filter_rating_page.js') }}"></script>
+{% endblock %}
+

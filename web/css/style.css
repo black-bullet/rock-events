@@ -2995,3 +2995,19 @@ iframe {
     font-size: 18px;
   }
 }
+
+.items__category{
+  width: 65%;
+}
+
+.category__label {
+  padding: 22px 70px;
+}
+
+.items_country{
+  padding: 22px;
+}
+
+.country{
+  width: 33%;
+}

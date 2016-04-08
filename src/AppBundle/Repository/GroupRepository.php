@@ -311,4 +311,22 @@ class GroupRepository extends EntityRepository
                   ->getQuery()
                   ->getResult();
     }
+
+    /**
+     * Find Groups with count rating category stars
+     *
+     * @return Group[]
+     */
+    public function findGroupsWithRatingCategoryStars()
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        return $qb->addSelect('SUM(rg.mark) as stars')
+                  ->andWhere($qb->expr()->eq('g.isActive', true))
+                  ->leftJoin('g.ratingGroups', 'rg')
+                  ->groupBy('g.id')
+                  ->orderBy('stars', 'DESC')
+                  ->getQuery()
+                  ->getResult();
+    }
 }
